@@ -13,7 +13,7 @@ def fmt_from_size(size):
         return 'H'
     if size == 4:
         return 'L'
-        return None
+    return None
 
 
 class RomCom:
