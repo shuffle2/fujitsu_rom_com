@@ -26,6 +26,7 @@ class RomCom:
     CMD_READ = 0x20
     CMD_READV = 0x21
     CMD_WRITEV = 0x22
+    CMD_EXEC = 0x23
     CMD_FINALIZE = 0xc0
     STATUS_OK = 1
     STATUS_NG = 2
@@ -159,6 +160,11 @@ class RomCom:
     def write16(s, addr, val): return s._write_v(addr, 2, val)
 
     def write32(s, addr, val): return s._write_v(addr, 4, val)
+
+    def jump(s, addr):
+        addr |= 1
+        d = struct.pack('<BL', s.CMD_EXEC, addr)
+        s._send(d)
 
 
 def com_open(serial_path, debug):

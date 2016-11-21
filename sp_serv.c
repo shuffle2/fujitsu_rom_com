@@ -15,6 +15,7 @@
 #define CMD_READ 0x20
 #define CMD_READV 0x21
 #define CMD_WRITEV 0x22
+#define CMD_EXEC 0x23
 #define CMD_WRITE 0x00
 
 #define STATUS_OK 1
@@ -104,6 +105,13 @@ static void do_rw_v(u8 cmd) {
   send_ack(cmd, STATUS_OK);
 }
 
+static void do_exec() {
+  void *addr;
+  SP_READ(addr);
+  typedef void (*just_jump_t)(void);
+  ((just_jump_t)addr)();
+}
+
 void serv_main() {
   while (1) {
     u8 cmd;
@@ -119,6 +127,9 @@ void serv_main() {
     case CMD_READV:
     case CMD_WRITEV:
       do_rw_v(cmd);
+      break;
+    case CMD_EXEC:
+      do_exec();
       break;
     default:
       send_ack(cmd, STATUS_UNK_CMD);
