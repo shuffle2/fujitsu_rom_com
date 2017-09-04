@@ -1,6 +1,8 @@
 # Fujitsu Serial Programming Mode Replacement
 Fujitsu Cortex-M3/M4 SoCs have boot ROM support for entering "serial programming mode", via UART or USB. This mode is activated by setting pins MD[1:0] = b'01' (they need to be externally pulled down during normal operation). With these pins configured, the ROM will use UART or USB to download code to SRAM and then execute it.  
 This project was specifically targetting a version of the MB9B500 series, however it should work with small tweaks for entire FM3/FM4 product line (or the decendents perhaps branded as Spansion or Cypress now...).  
+## Prerequisites
+The devices speak some dumb serial-over-usb dialect. In order to simplify interfacing with it from a PC, you can use the virtual COM port driver (USBVCOM.SYS driver, for windows). Currently it is available in the "USB Direct" tool: http://www.cypress.com/documentation/software-and-drivers/flash-usb-direct-programmer-1
 ## But why?
 Fujitsu has a very crappy, ancient win32 program which uploads their own mystery code blob to SRAM and interfaces with that to allow a few simple commands like erasing flash and writing new data to flash. This project completely replaces all code running on the Fujitsu part (server code in SRAM), and on the PC (client written in python). This allows rapid testing of code on the device and doing completely custom things.
 ## Helpful docs
